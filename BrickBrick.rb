@@ -1,5 +1,6 @@
 require 'gosu'
 include Math
+require_relative 'src/Values'
 require_relative 'src/Player'
 require_relative 'src/Ball'
 require_relative 'src/Brick'
@@ -9,9 +10,10 @@ require_relative 'src/GameOver'
 require_relative 'src/Bonus'
 
 class BrickBrick < Gosu::Window
+  include SizeValues
   def initialize
-    super 640, 480
-    self.caption = "BrickBrick"    
+    super screen_witdh, screen_height
+    self.caption = self.class.to_s    
     @player = Player.new
     GameOver.initialize
     Victory.initialize
