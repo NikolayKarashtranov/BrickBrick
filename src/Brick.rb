@@ -1,8 +1,8 @@
-class Brick
-  attr_reader :x, :y, :hp
-
-  def draw
-    @brick.draw @x, @y, 0
+class Brick < VisualGameObject
+  include SizeValues
+  attr_reader :hp
+  def initialize(x, y, image)
+    super(x, y, brick_width, brick_height, image)
   end
 
   def get_hit
@@ -15,18 +15,16 @@ end
 
 class SingleHitBrick < Brick
   def initialize(x, y)
-    @brick = Gosu::Image.new("media/brick.png")
-    @x = x
-    @y = y
+    brick = Gosu::Image.new("media/brick.png")
+    super(x, y, brick)
     @hp = 1
   end
 end
 
 class DoubleHitBrick < Brick
   def initialize(x, y)
-    @brick = Gosu::Image.new("media/brick_double.png")
-    @x = x
-    @y = y
+    brick = Gosu::Image.new("media/brick_double.png")
+    super(x, y, brick)
     @hp = 2
   end
 end

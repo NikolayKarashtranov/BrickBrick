@@ -40,7 +40,7 @@ module SizeValues
 	end
 
 	def player_step
-		5
+		8
 	end
 
 	def bonus_width
@@ -61,5 +61,13 @@ module SizeValues
 
 	def angle_formula_max_angle
 		85
+	end
+
+	def brick_width
+		64
+	end
+
+	def brick_height
+		16
 	end
 end

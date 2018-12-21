@@ -2,8 +2,8 @@ class Ball < VisualGameObject
   include SizeValues
   attr_accessor :angle
   def initialize(x = center_x, y = center_y, angle = 180)
-    @ball = Gosu::Image.new("media/ball.png")
-    super(x, y, ball_diameter, ball_diameter)
+    ball = Gosu::Image.new("media/ball.png")
+    super(x, y, ball_diameter, ball_diameter, ball)
     @angle = angle
   end
 
@@ -28,7 +28,7 @@ class Ball < VisualGameObject
   end
 
   def contact_walls
-    if @x <= 0 || @x >= 625
+    if @x <= 0 || @x >= screen_width - @width
       @angle = (360 - @angle)
     end
     if @y <= 0
@@ -44,7 +44,7 @@ class Ball < VisualGameObject
     level.bricks = level.bricks.reject do |brick|
       already_hit = brick_destroyed = false 
 
-      is_ball_in_brick_horizontal_range = @x > brick.x - 15 && @x < brick.x + 64
+      is_ball_in_brick_horizontal_range = @x > brick.x - @width && @x < brick.x + brick.width
       is_ball_in_contact_down_wall = @y >= brick.y + 11 && @y < brick.y + 16
       is_ball_in_contact_up_wall = @y + 15 > brick.y && @y + 15 <= brick.y + 5
       is_ball_coming_from_below = cos(angle_in_radians) > 0      
@@ -87,10 +87,5 @@ class Ball < VisualGameObject
       end
       brick_destroyed
     end    
-  end
-
-  def draw
-    self.move
-    @ball.draw @x, @y, 0
   end
 end

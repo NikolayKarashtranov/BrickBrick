@@ -31,7 +31,10 @@ class Level
   def draw
     @bricks.each{ |brick| brick.draw }
     @bonuses.each{ |bonus| bonus.draw }
-    @balls.each{ |ball| ball.draw }
+    @balls.each do |ball|
+      ball.move 
+      ball.draw
+    end
   end
 end
 

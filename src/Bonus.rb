@@ -2,8 +2,8 @@ class BonusDouble < VisualGameObject
   include SizeValues
   attr_accessor :x, :y
   def initialize(x, y)
-    super(x, y, bonus_width, bonus_height)
-    @bonus_pic = Gosu::Image.new("media/double.png")
+    bonus_pic = Gosu::Image.new("media/double.png")
+    super(x, y, bonus_width, bonus_height, bonus_pic)
   end
 
   def move
@@ -16,9 +16,5 @@ class BonusDouble < VisualGameObject
       new_balls.push Ball.new(ball.x, ball.y, rand(360))
     end
     level.balls.concat new_balls
-  end
-
-  def draw
-    @bonus_pic.draw @x, @y, 0
   end
 end

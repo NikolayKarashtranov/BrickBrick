@@ -2,12 +2,8 @@ class Player < VisualGameObject
   include SizeValues
 
   def initialize
-    @player = Gosu::Image.new("media/stick.png")
-    super(player_starting_x, player_starting_y, player_width, player_height)
-  end
-
-  def draw
-    @player.draw(@x, @y, 0)
+    image = Gosu::Image.new("media/stick.png")
+    super(player_starting_x, player_starting_y, player_width, player_height, image)
   end
 
   def go_left
