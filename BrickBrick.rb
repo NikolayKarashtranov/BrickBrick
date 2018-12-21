@@ -1,6 +1,7 @@
 require 'gosu'
 include Math
 require_relative 'src/Values'
+require_relative 'src/VisualGameObject'
 require_relative 'src/Player'
 require_relative 'src/Ball'
 require_relative 'src/Brick'
@@ -12,7 +13,7 @@ require_relative 'src/Bonus'
 class BrickBrick < Gosu::Window
   include SizeValues
   def initialize
-    super screen_witdh, screen_height
+    super screen_width, screen_height
     self.caption = self.class.to_s    
     @player = Player.new
     GameOver.initialize

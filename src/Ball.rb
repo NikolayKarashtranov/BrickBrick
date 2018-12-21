@@ -1,22 +1,29 @@
-class Ball
-  attr_accessor :x, :y, :angle
-  def initialize(x = 320, y = 240, angle = 180)
+class Ball < VisualGameObject
+  include SizeValues
+  attr_accessor :angle
+  def initialize(x = center_x, y = center_y, angle = 180)
     @ball = Gosu::Image.new("media/ball.png")
-    @x = x
-    @y = y
+    super(x, y, ball_diameter, ball_diameter)
     @angle = angle
   end
 
   def move
-    @x += Gosu.offset_x(@angle, 5)
-    @y += Gosu.offset_y(@angle, 5)
+    @x += Gosu.offset_x(@angle, ball_step)
+    @y += Gosu.offset_y(@angle, ball_step)
+  end
+
+  def calc_ball_player_contact_angle(player)
+    half_width = width/2.0
+    player_half_width = player.width/2.0
+    ball_horizontal_center = left + half_width
+    player_horizontal_center = player.left + player_half_width
+    angle_coef = angle_formula_max_angle / (half_width + player_half_width)
+    ((ball_horizontal_center - player_horizontal_center)*angle_coef) % 360
   end
 
   def contact_player(player)
-    if @x > player.x - 15 && @x < player.x + 66 && @y + 15 <= player.y + 5 && @y + 15 >= player.y
-      ball_horizontal_center = @x + 7.5
-      player_horizontal_center = player.x + 33
-      @angle = ((ball_horizontal_center - player_horizontal_center)*(85/40.5)) % 360
+    if right > player.left && left < player.right && down <= player.up + player_stick_contact_buffer && down >= player.up
+      @angle = calc_ball_player_contact_angle(player)
     end
   end
 
@@ -32,7 +39,7 @@ class Ball
   def contact_bricks(level)
     angle_in_radians = @angle/180 * PI
     have_a_horizontal_hit = false
-    have_a_vertical_hit = false    
+    have_a_vertical_hit = false
     
     level.bricks = level.bricks.reject do |brick|
       already_hit = brick_destroyed = false 
@@ -49,7 +56,7 @@ class Ball
       is_ball_coming_from_left = sin(angle_in_radians) > 0
       is_ball_coming_from_right = sin(angle_in_radians) < 0
 
-      if (!have_a_vertical_hit && is_ball_in_brick_horizontal_range)
+      if !have_a_vertical_hit && is_ball_in_brick_horizontal_range
         if (is_ball_in_contact_down_wall && is_ball_coming_from_below) || (is_ball_in_contact_up_wall && is_ball_coming_from_above)
           @angle = (180 - @angle) % 360
           brick.get_hit
@@ -64,7 +71,7 @@ class Ball
           end
         end
       end
-      if (!have_a_horizontal_hit && !already_hit && is_ball_in_brick_vertical_range)
+      if !have_a_horizontal_hit && !already_hit && is_ball_in_brick_vertical_range
         if (is_ball_in_contact_left_wall && is_ball_coming_from_left) || (is_ball_in_contact_right_wall && is_ball_coming_from_right)
           @angle = (360 - @angle) % 360          
           brick.get_hit          

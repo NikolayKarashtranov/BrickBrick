@@ -1,29 +1,28 @@
-class Player
-  attr_reader :x, :y
+class Player < VisualGameObject
+  include SizeValues
 
   def initialize
     @player = Gosu::Image.new("media/stick.png")
-    @x = 300
-    @y = 420
+    super(player_starting_x, player_starting_y, player_width, player_height)
   end
 
   def draw
-    @player.draw @x, @y, 0
+    @player.draw(@x, @y, 0)
   end
 
   def go_left
-    if @x > 5
-      @x -= 5
+    if @x > player_step
+      @x -= player_step
     else
       @x = 0
     end
   end
 
   def go_right
-    if @x < 569
-      @x += 5
+    if @x < screen_width - @width - player_step
+      @x += player_step
     else
-      @x = 574
+      @x = screen_width - @width
     end
   end
 
@@ -31,10 +30,10 @@ class Player
     level.bonuses = level.bonuses.reject do |bonus|
       if(bonus.y + 12 > @y && bonus.y < @y + 13 && bonus.x + 25 > @x && bonus.x < @x + 66)
         bonus.activate level 
-        true        
+        true
       else
         false
-      end 
-    end    
+      end
+    end
   end
 end
