@@ -55,7 +55,7 @@ module SizeValues
 		2
 	end
 
-	def player_stick_contact_buffer
+	def contact_buffer
 		5
 	end
 
