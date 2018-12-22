@@ -36,44 +36,55 @@ class Ball < VisualGameObject
     end
   end
 
-  def contact_bricks(level)
+  def vertical_wall_brick_hit(brick)
     angle_in_radians = @angle/180 * PI
-    have_a_horizontal_hit = false
-    have_a_vertical_hit = false
-    
-    level.bricks = level.bricks.reject do |brick|
-      already_hit = brick_destroyed = false 
-
-      is_ball_in_brick_horizontal_range = right > brick.left && left < brick.right
+    is_ball_in_brick_horizontal_range = right > brick.left && left < brick.right
+    if is_ball_in_brick_horizontal_range
       is_ball_in_contact_down_wall = up < brick.down && up >= brick.down - contact_buffer
       is_ball_in_contact_up_wall = down > brick.up && down <= brick.up + contact_buffer
       is_ball_coming_from_below = cos(angle_in_radians) > 0
       is_ball_coming_from_above = cos(angle_in_radians) < 0
 
-      is_ball_in_brick_vertical_range = down > brick.up && up < brick.down
+      down_wall_hit = is_ball_in_contact_down_wall && is_ball_coming_from_below
+      up_wall_hit = is_ball_in_contact_up_wall && is_ball_coming_from_above
+
+      down_wall_hit or up_wall_hit
+    end
+  end
+
+  def side_wall_brick_hit(brick)
+    angle_in_radians = @angle/180 * PI
+    is_ball_in_brick_vertical_range = down > brick.up && up < brick.down
+    if is_ball_in_brick_vertical_range
       is_ball_in_contact_left_wall = right > brick.left && right <= brick.x + contact_buffer
       is_ball_in_contact_right_wall =  left < brick.right && left >= brick.right - contact_buffer
       is_ball_coming_from_left = sin(angle_in_radians) > 0
       is_ball_coming_from_right = sin(angle_in_radians) < 0
 
-      if !have_a_vertical_hit && is_ball_in_brick_horizontal_range
-        if (is_ball_in_contact_down_wall && is_ball_coming_from_below) || (is_ball_in_contact_up_wall && is_ball_coming_from_above)
-          @angle = (180 - @angle) % 360
-          brick.get_hit
-          already_hit = true
-          have_a_vertical_hit = true
-          brick_destroyed = brick.hp.zero?
-        end
+      left_wall_hit = is_ball_in_contact_left_wall && is_ball_coming_from_left
+      right_wall_hit = is_ball_in_contact_right_wall && is_ball_coming_from_right
+
+      left_wall_hit or right_wall_hit
+    end
+  end
+
+  def contact_bricks(level)
+    have_a_horizontal_hit = false
+    have_a_vertical_hit = false
+    level.bricks = level.bricks.reject do |brick|
+      already_hit = brick_destroyed = false
+      if !have_a_vertical_hit && vertical_wall_brick_hit(brick)
+        @angle = (180 - @angle) % 360
+        brick.get_hit
+        already_hit = true
+        have_a_vertical_hit = true
       end
-      if !have_a_horizontal_hit && !already_hit && is_ball_in_brick_vertical_range
-        if (is_ball_in_contact_left_wall && is_ball_coming_from_left) || (is_ball_in_contact_right_wall && is_ball_coming_from_right)
-          @angle = (360 - @angle) % 360
-          brick.get_hit
-          have_a_horizontal_hit = true
-          brick_destroyed = brick.hp.zero?
-        end
+      if !have_a_horizontal_hit && !already_hit && side_wall_brick_hit(brick)
+        @angle = (360 - @angle) % 360
+        brick.get_hit
+        have_a_horizontal_hit = true
       end
-      brick_destroyed
-    end    
+      brick.hp.zero?
+    end
   end
 end
