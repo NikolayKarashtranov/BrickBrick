@@ -5,11 +5,21 @@ class Brick < VisualGameObject
     super(x, y, brick_width, brick_height, image)
   end
 
-  def get_hit
+  def get_hit(level)
     @hp -= 1
-    if(@hp == 1)
-      @brick = Gosu::Image.new("media/brick.png")
+    if @hp == 1 
+      @image = Gosu::Image.new("media/brick.png")
     end
+    if @hp.zero? && rand(8) == 0
+      spawn_bonus(level)
+    end
+  end
+
+  def spawn_bonus(level)
+    bonus_x = left + (@width - bonus_width)/2
+    bonus_y = up + (@height - bonus_height)/2
+    double_bonus = BonusDouble.new(bonus_x, bonus_y)
+    level.bonuses.push(double_bonus)
   end
 end
 

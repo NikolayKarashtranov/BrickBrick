@@ -16,9 +16,7 @@ class BrickBrick < Gosu::Window
     super screen_width, screen_height
     self.caption = self.class.to_s    
     @player = Player.new
-    GameOver.initialize
-    Victory.initialize
-    @level = LevelOne.new
+    @level = LevelThree.new
     
     @game_over = @win = false
   end
@@ -63,11 +61,11 @@ class BrickBrick < Gosu::Window
   def draw
     if !@game_over && !@win
       @player.draw
-      @level.draw  
+      @level.draw
     elsif @win
-      Victory.draw
+      Victory.new.draw
     else
-      GameOver.draw
+      GameOver.new.draw
     end
   end
 end

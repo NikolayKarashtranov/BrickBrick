@@ -24,8 +24,8 @@ class Player < VisualGameObject
 
   def contact_bonuses(level)
     level.bonuses = level.bonuses.reject do |bonus|
-      if(bonus.y + 12 > @y && bonus.y < @y + 13 && bonus.x + 25 > @x && bonus.x < @x + 66)
-        bonus.activate level 
+      if(bonus.down > up && bonus.down < down && bonus.right > left && bonus.left < right)
+        bonus.activate(level)
         true
       else
         false

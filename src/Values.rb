@@ -70,4 +70,20 @@ module SizeValues
 	def brick_height
 		16
 	end
+
+	def victory_image_width
+		330
+	end
+
+	def victory_image_height
+		112
+	end
+
+	def loss_image_width
+		324
+	end
+
+	def loss_image_height
+		112
+	end
 end

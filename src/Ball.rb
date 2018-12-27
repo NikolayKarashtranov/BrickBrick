@@ -75,13 +75,13 @@ class Ball < VisualGameObject
       already_hit = brick_destroyed = false
       if !have_a_vertical_hit && vertical_wall_brick_hit(brick)
         @angle = (180 - @angle) % 360
-        brick.get_hit
+        brick.get_hit(level)
         already_hit = true
         have_a_vertical_hit = true
       end
       if !have_a_horizontal_hit && !already_hit && side_wall_brick_hit(brick)
         @angle = (360 - @angle) % 360
-        brick.get_hit
+        brick.get_hit(level)
         have_a_horizontal_hit = true
       end
       brick.hp.zero?
