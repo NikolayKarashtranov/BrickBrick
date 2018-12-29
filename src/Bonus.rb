@@ -1,13 +1,12 @@
 class BonusDouble < VisualGameObject
-  include SizeValues
   attr_accessor :x, :y
   def initialize(x, y)
     bonus_pic = Gosu::Image.new("media/double.png")
-    super(x, y, bonus_width, bonus_height, bonus_pic)
+    super(x, y, SizeValues::BONUS_WIDTH, SizeValues::BONUS_HEIGHT, bonus_pic)
   end
 
   def move
-    @y += bonus_step
+    @y += SizeValues::BONUS_STEP
   end
 
   def activate(level)

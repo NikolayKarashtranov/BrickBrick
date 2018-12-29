@@ -1,8 +1,7 @@
 class Brick < VisualGameObject
-  include SizeValues
   attr_reader :hp
   def initialize(x, y, image)
-    super(x, y, brick_width, brick_height, image)
+    super(x, y, SizeValues::BRICK_WIDTH, SizeValues::BRICK_HEIGHT, image)
   end
 
   def get_hit(level)
@@ -16,8 +15,8 @@ class Brick < VisualGameObject
   end
 
   def spawn_bonus(level)
-    bonus_x = left + (@width - bonus_width)/2
-    bonus_y = up + (@height - bonus_height)/2
+    bonus_x = left + (@width - SizeValues::BONUS_WIDTH)/2
+    bonus_y = up + (@height - SizeValues::BONUS_HEIGHT)/2
     double_bonus = BonusDouble.new(bonus_x, bonus_y)
     level.bonuses.push(double_bonus)
   end

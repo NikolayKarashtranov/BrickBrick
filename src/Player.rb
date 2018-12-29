@@ -1,25 +1,28 @@
 class Player < VisualGameObject
-  include SizeValues
-
   def initialize
     image = Gosu::Image.new("media/stick.png")
-    super(player_starting_x, player_starting_y, player_width, player_height, image)
+    super(SizeValues::PLAYER_STARTING_X, SizeValues::PLAYER_STARTING_Y, SizeValues::PLAYER_WIDTH, SizeValues::PLAYER_HEIGHT, image)
   end
 
   def go_left
-    if @x > player_step
-      @x -= player_step
+    if @x > SizeValues::PLAYER_STEP
+      @x -= SizeValues::PLAYER_STEP
     else
       @x = 0
     end
   end
 
   def go_right
-    if @x < screen_width - @width - player_step
-      @x += player_step
+    if @x < SizeValues::SCREEN_WIDTH - @width - SizeValues::PLAYER_STEP
+      @x += SizeValues::PLAYER_STEP
     else
-      @x = screen_width - @width
+      @x = SizeValues::SCREEN_WIDTH - @width
     end
+  end
+
+  def back_to_start
+    @x = SizeValues::PLAYER_STARTING_X
+    @y = SizeValues::PLAYER_STARTING_Y
   end
 
   def contact_bonuses(level)

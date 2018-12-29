@@ -1,89 +1,24 @@
 module SizeValues
-	def screen_width
-		640
-	end
-
-	def screen_height
-		480
-	end
-
-	def ball_step
-		5
-	end
-
-	def center_x
-		screen_width/2
-	end
-
-	def center_y
-		screen_height/2
-	end
-
-	def ball_diameter
-		15
-	end
-
-	def player_width
-		66
-	end
-
-	def player_height
-		13
-	end
-
-	def player_starting_x
-		300
-	end
-
-	def player_starting_y
-		420
-	end
-
-	def player_step
-		8
-	end
-
-	def bonus_width
-		25
-	end
-
-	def bonus_height
-		12
-	end
-
-	def bonus_step
-		2
-	end
-
-	def contact_buffer
-		5
-	end
-
-	def angle_formula_max_angle
-		85
-	end
-
-	def brick_width
-		64
-	end
-
-	def brick_height
-		16
-	end
-
-	def victory_image_width
-		330
-	end
-
-	def victory_image_height
-		112
-	end
-
-	def loss_image_width
-		324
-	end
-
-	def loss_image_height
-		112
-	end
+  SCREEN_WIDTH = 640
+  SCREEN_HEIGHT = 480
+  BALL_STEP = 5
+  CENTER_X = SCREEN_WIDTH/2
+  CENTER_Y = SCREEN_HEIGHT/2
+  BALL_DIAMETER = 15
+  PLAYER_WIDTH = 66
+  PLAYER_HEIGHT = 13
+  PLAYER_STARTING_X = 300
+  PLAYER_STARTING_Y = 420
+  PLAYER_STEP = 8
+  BONUS_WIDTH = 25
+  BONUS_HEIGHT = 12
+  BONUS_STEP = 2
+  CONTACT_BUFFER = 5
+  ANGLE_FORMULA_MAX_ANGLE = 85
+	BRICK_WIDTH = 64
+  BRICK_HEIGHT = 16
+  VICTORY_IMAGE_WIDTH = 360
+  VICTORY_IMAGE_HEIGHT = 112
+  LOSS_IMAGE_WIDTH = 324
+  LOSS_IMAGE_HEIGHT = 112
 end

@@ -1,15 +1,22 @@
-class VisualGameObject
-	attr_accessor :x, :y, :width, :height, :image
-	def initialize(x, y, width, height, image)
+class GameImage
+	attr_accessor :x, :y, :image
+	def initialize(x, y, image)
 		@x = x
 		@y = y
-		@width = width
-		@height = height
 		@image = image
 	end
 
 	def draw
 		@image.draw @x, @y, 0
+	end
+end
+
+class VisualGameObject < GameImage
+	attr_accessor :width, :height
+	def initialize(x, y, width, height, image)
+		@width = width
+		@height = height
+		super(x, y, image)
 	end
 
 	def left
