@@ -21,7 +21,10 @@ class Ball < VisualGameObject
   end
 
   def contact_player(player)
-    if right > player.left && left < player.right && down <= player.up + SizeValues::CONTACT_BUFFER && down >= player.up
+    ball_in_player_width = right > player.left && left < player.right
+    ball_in_player_contact_height = down <= player.up + SizeValues::CONTACT_BUFFER && down >= player.up
+    ball_in_contact_with_player = ball_in_player_width && ball_in_player_contact_height
+    if ball_in_contact_with_player
       @angle = calc_ball_player_contact_angle(player)
     end
   end
