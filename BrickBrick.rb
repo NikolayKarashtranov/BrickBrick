@@ -1,4 +1,5 @@
 require 'gosu'
+require 'fileutils'
 include Math
 require_relative 'src/Values'
 require_relative 'src/VisualGameObject'
@@ -11,6 +12,7 @@ require_relative 'src/Bonus'
 
 class BrickBrick < Gosu::Window
   def initialize
+    FileUtils.mkdir_p 'save'
     super SizeValues::SCREEN_WIDTH, SizeValues::SCREEN_HEIGHT
     self.caption = self.class.to_s
     @state = InitMenu.new(self)
