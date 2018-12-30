@@ -77,21 +77,22 @@ class LoadGameState < InputTextState
 
   def positions_to_objs(info, angle = false)
     info.map do |el_info|
-      el_class = el_info.shift
+      el_class = el_info[:el_class]
       if angle
-        el = el_class.new(el_info[0], el_info[1], el_info[2])
+        el_class.new(el_info[:x], el_info[:y], el_info[:angle])
       else
-        el = el_class.new(el_info[0], el_info[1])
+        el_class.new(el_info[:x], el_info[:y])
       end
     end
   end
 
   def load_game_state(info)
-    level = info["level"].new
-    level.bricks = positions_to_objs(info["bricks"])
-    level.balls = positions_to_objs(info["balls"], true)
-    level.bonuses = positions_to_objs(info["bonuses"])
-    player = Player.new(info["player_pos"][0], info["player_pos"][1])
+    level = info[:level].new
+    level.bricks = positions_to_objs(info[:bricks])
+    level.balls = positions_to_objs(info[:balls], true)
+    level.bonuses = positions_to_objs(info[:bonuses])
+    player_info = info[:player]
+    player = Player.new(player_info[:x], player_info[:y])
     InGameState.new(player, level, @window)
   end
 
@@ -146,25 +147,20 @@ class SaveGameState < InputTextState
 
   def objs_to_positions(arr, angle = false)
     arr.map do |el|
-      el_info = Array.new
-      el_info.push(el.class)
-      el_info.push(el.x).push(el.y)
-      el_info.push(el.angle) if angle
+      el_info = { el_class: el.class, x: el.x, y: el.y }
+      el_info[:angle] = el.angle if angle
       el_info
     end
   end
 
   def save_info
-    info = Hash.new
-    player = @in_game.player
-    player_pos = [player.x, player.y]
+    in_game_player = @in_game.player
+    player = { x: in_game_player.x, y: in_game_player.y }
     level = @in_game.level
-    info["level"] = level.class
-    info["player_pos"] = player_pos
-    info["balls"] = objs_to_positions(level.balls, true)
-    info["bonuses"] = objs_to_positions(level.bonuses)
-    info["bricks"] = objs_to_positions(level.bricks)
-    info
+    balls = objs_to_positions(level.balls, true)
+    bonuses = objs_to_positions(level.bonuses)
+    bricks = objs_to_positions(level.bricks)
+    { level: level.class, player: player, balls: balls, bonuses: bonuses, bricks: bricks }
   end
 end
 
