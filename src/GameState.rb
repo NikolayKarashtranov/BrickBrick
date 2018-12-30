@@ -173,6 +173,7 @@ class SaveGameState < InputTextState
 end
 
 class InGameState
+  attr_reader :window
   attr_accessor :pause, :level, :player
   def initialize(player, level, window)
     @pause = true
@@ -206,7 +207,7 @@ class InGameState
       state = @level.update(@player, state)
     end
     state
-   end
+  end
 
   def draw
     @player.draw

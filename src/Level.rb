@@ -27,9 +27,9 @@ class Level
       end
     end
     if win
-      state = Victory.new(@window)
-    elsif balls.empty?
-      state = GameOver.new(@window)
+      state = Victory.new(state.window)
+    elsif   balls.empty?
+      state = GameOver.new(state.window)
     end
     state
   end
