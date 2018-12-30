@@ -38,19 +38,27 @@ class Victory < StaticGameState
 end
 
 class InitMenu < StaticGameState
-  def initialize(window)
-    init_img = Gosu::Image.new("media/Menu1.png")
+  def initialize(window, state = false)
+    @font = Gosu::Font.new(35, name: "Nimbus Mono L")
+    @menu_text = SizeValues::MENU_TEXT
+    init_img = Gosu::Image.new("media/Menu.png")
     super(0, 0, init_img, window)
+    @state = state
   end
 
   def update
     if Gosu.button_down? Gosu::KB_SPACE
-      start_game
+      @state or start_game
     elsif Gosu.button_down? Gosu::KB_L
       LoadGameState.new(@window)
     else
       self
     end
+  end
+
+  def draw
+    super()
+    @font.draw_text(@menu_text, SizeValues::MENU_TEXT_X, SizeValues::MENU_TEXT_Y, 0)
   end
 end
 
@@ -71,7 +79,7 @@ end
 
 class LoadGameState < InputTextState
   def initialize(window)
-    title = "Please enter a save game name and press Escape to load the game."
+    title = "Please enter a save game name and press \"Escape\" to load the game."
     super(window, title)
   end
 
@@ -125,7 +133,7 @@ end
 
 class SaveGameState < InputTextState
   def initialize(window, in_game)
-    title = "Please enter save game name and press Escape to save the game."
+    title = "Please enter save game name and press \"Escape\" to save the game."
     super(window, title)
     @in_game = in_game
   end
@@ -175,7 +183,10 @@ class InGameState
 
   def update
     state = self
-    if Gosu.button_down? Gosu::KB_S
+    if Gosu.button_down? Gosu::KB_M
+      @pause = true
+      state = InitMenu.new(@window, self)
+    elsif Gosu.button_down? Gosu::KB_S
       @pause = true
       state = SaveGameState.new(@window, self)
     elsif @pause

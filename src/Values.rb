@@ -25,4 +25,9 @@ module SizeValues
   SAVE_GAME_TEXT_Y = 166
   SAVE_GAME_INPUT_X = 280
   SAVE_GAME_INPUT_Y = 186
+  MENU_TEXT = "1. Press \"SPACE\" to play/continue\n2. Press \"L\" to load a game\n\n\n" \
+  "In game:\n1. Press \"G\" to start\n2. Press \"P\" to pause\n3. Press \"S\" to save your game" \
+  "\n4. Press \"M\" for this menu"
+  MENU_TEXT_X = 34
+  MENU_TEXT_Y = 108
 end
