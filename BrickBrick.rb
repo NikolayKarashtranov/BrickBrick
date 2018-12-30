@@ -13,7 +13,7 @@ class BrickBrick < Gosu::Window
   def initialize
     super SizeValues::SCREEN_WIDTH, SizeValues::SCREEN_HEIGHT
     self.caption = self.class.to_s
-    @state = InitMenu.new
+    @state = InitMenu.new(self)
   end
 
   def update

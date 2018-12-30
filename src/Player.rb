@@ -1,7 +1,7 @@
 class Player < VisualGameObject
-  def initialize
+  def initialize(x = SizeValues::PLAYER_STARTING_X, y = SizeValues::PLAYER_STARTING_Y)
     image = Gosu::Image.new("media/stick.png")
-    super(SizeValues::PLAYER_STARTING_X, SizeValues::PLAYER_STARTING_Y, SizeValues::PLAYER_WIDTH, SizeValues::PLAYER_HEIGHT, image)
+    super(x, y, SizeValues::PLAYER_WIDTH, SizeValues::PLAYER_HEIGHT, image)
   end
 
   def go_left

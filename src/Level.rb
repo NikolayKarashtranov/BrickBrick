@@ -8,6 +8,32 @@ class Level
     @balls.push Ball.new
   end
 
+  def update(player, state)
+    update_bonuses
+    move_bonuses
+    update_balls(player)
+    move_balls
+    player.contact_bonuses(self)
+    if over?
+      state.pause = true
+      player.back_to_start
+      case self
+      when LevelOne
+        state.level = LevelTwo.new
+      when LevelTwo
+        state.level = LevelThree.new
+      when LevelThree
+        win = true
+      end
+    end
+    if win
+      state = Victory.new(@window)
+    elsif balls.empty?
+      state = GameOver.new(@window)
+    end
+    state
+  end
+
   def update_bonuses
     @bonuses.reject! do |bonus|
       bonus.up > SizeValues::SCREEN_HEIGHT

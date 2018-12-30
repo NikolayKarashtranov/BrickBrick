@@ -7,7 +7,7 @@ class GameImage
 	end
 
 	def draw
-		@image.draw @x, @y, 0
+		@image.draw(@x, @y, 0)
 	end
 end
 
