@@ -9,15 +9,19 @@ class Brick < VisualGameObject
     if @hp == 1 
       @image = Gosu::Image.new("media/brick.png")
     end
-    if @hp.zero? && rand(8) == 0
-      spawn_bonus(level)
+    if @hp.zero?
+      if rand(8) == 0
+        spawn_bonus(level)
+      end
+      level.bricks.delete(self)
     end
   end
 
   def spawn_bonus(level)
     bonus_x = left + (@width - SizeValues::BONUS_WIDTH)/2
     bonus_y = up + (@height - SizeValues::BONUS_HEIGHT)/2
-    double_bonus = BonusDouble.new(bonus_x, bonus_y)
+    klass = [BonusDouble, BonusFire, BonusLength, FakeBall].sample
+    double_bonus = klass.new(bonus_x, bonus_y)
     level.bonuses.push(double_bonus)
   end
 end

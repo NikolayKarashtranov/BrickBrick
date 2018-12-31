@@ -6,8 +6,8 @@ class StaticGameState < GameImage
 
   def start_game
     player = Player.new
-    level = LevelOne.new
-    InGameState.new(player, level, @window)
+    level = LevelOne.new(player)
+    InGameState.new(level, @window)
   end
 
   def update
@@ -94,14 +94,22 @@ class LoadGameState < InputTextState
     end
   end
 
+  def load_active_bonuses(info)
+    info.map do |active|
+      BonusFire.new(0, 0, active[:number_of_shots])
+    end
+  end
+
   def load_game_state(info)
-    level = info[:level].new
+    player_info = info[:player]
+    player = Player.new(player_info[:x], player_info[:y], player_info[:long])
+    level = info[:level].new(player)
     level.bricks = positions_to_objs(info[:bricks])
     level.balls = positions_to_objs(info[:balls], true)
     level.bonuses = positions_to_objs(info[:bonuses])
-    player_info = info[:player]
-    player = Player.new(player_info[:x], player_info[:y])
-    InGameState.new(player, level, @window)
+    level.active_bonuses = load_active_bonuses(info[:active_bonuses])
+    level.bullets = positions_to_objs(info[:bullets])
+    InGameState.new(level, @window)
   end
 
   def load_game
@@ -161,23 +169,31 @@ class SaveGameState < InputTextState
     end
   end
 
+  def active_bonus_info(bonuses)
+    bonuses.map do |bonus|
+      { number_of_shots: bonus.number_of_shots }
+    end
+  end
+
   def save_info
-    in_game_player = @in_game.player
-    player = { x: in_game_player.x, y: in_game_player.y }
+    in_game_player = @in_game.level.player
+    player = { x: in_game_player.x, y: in_game_player.y, long: in_game_player.long}
     level = @in_game.level
     balls = objs_to_positions(level.balls, true)
     bonuses = objs_to_positions(level.bonuses)
     bricks = objs_to_positions(level.bricks)
-    { level: level.class, player: player, balls: balls, bonuses: bonuses, bricks: bricks }
+    bullets = objs_to_positions(level.bullets)
+    active_bonuses = active_bonus_info(level.active_bonuses)
+    { level: level.class, player: player, balls: balls, bonuses: bonuses, bricks: bricks, bullets: bullets, active_bonuses: active_bonuses }
   end
 end
 
 class InGameState
   attr_reader :window
-  attr_accessor :pause, :level, :player
-  def initialize(player, level, window)
+  attr_accessor :pause, :level
+  def initialize(level, window)
     @pause = true
-    @player = player
+    @player = level.player
     @level = level
     @window = window
   end
@@ -204,7 +220,7 @@ class InGameState
       if Gosu.button_down? Gosu::KB_RIGHT
         @player.go_right
       end
-      state = @level.update(@player, state)
+      state = @level.update(state)
     end
     state
   end

@@ -73,7 +73,7 @@ class Ball < VisualGameObject
   def contact_bricks(level)
     have_a_horizontal_hit = false
     have_a_vertical_hit = false
-    level.bricks = level.bricks.reject do |brick|
+    level.bricks.each do |brick|
       already_hit = brick_destroyed = false
       if !have_a_vertical_hit && vertical_wall_brick_hit(brick)
         @angle = (180 - @angle) % 360
@@ -86,7 +86,6 @@ class Ball < VisualGameObject
         brick.get_hit(level)
         have_a_horizontal_hit = true
       end
-      brick.hp.zero?
     end
   end
 end

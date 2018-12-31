@@ -30,4 +30,11 @@ module SizeValues
   "\n4. Press \"M\" for this menu"
   MENU_TEXT_X = 34
   MENU_TEXT_Y = 108
+  FIRE_BONUS_TIME = 10000
+  BULLET_WIDTH = 6
+  BULLET_HEIGHT = 17
+  BULLET_STEP = 8
+  NUMBER_OF_SHOTS = 10
+  PERIOD_OF_SHOOTS = 500
+  PLAYER_LONG_WIDTH = 96
 end

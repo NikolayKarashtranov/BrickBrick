@@ -1,43 +1,59 @@
 class Level
-  attr_accessor :bricks, :bonuses, :balls
-
-  def initialize
+  attr_accessor :bricks, :bonuses, :balls, :bullets, :active_bonuses, :fake_ball_effect
+  attr_reader :player
+  def initialize(player)
     @bricks = Array.new
     @bonuses = Array.new
+    @active_bonuses = Array.new
     @balls = Array.new
+    @bullets = Array.new
     @balls.push Ball.new
+    @player = player
+    @fake_ball_effect = false
   end
 
-  def update(player, state)
-    update_bonuses
-    move_bonuses
-    update_balls(player)
-    move_balls
-    player.contact_bonuses(self)
+  def process_updated(state)
     if over?
       state.pause = true
-      player.back_to_start
+      @player.back_to_start
       case self
       when LevelOne
-        state.level = LevelTwo.new
+        state.level = LevelTwo.new(@player)
       when LevelTwo
-        state.level = LevelThree.new
+        state.level = LevelThree.new(@player)
       when LevelThree
         win = true
       end
     end
     if win
       state = Victory.new(state.window)
-    elsif   balls.empty?
+    elsif  balls.empty? or @fake_ball_effect
       state = GameOver.new(state.window)
     end
     state
+  end
+
+  def update(state)
+    update_bonuses
+    move_bonuses
+    update_active_bonuses
+    update_bullets
+    move_bullets
+    update_balls(@player)
+    move_balls
+    @player.contact_bonuses(self)
+    process_updated(state)
+    
   end
 
   def update_bonuses
     @bonuses.reject! do |bonus|
       bonus.up > SizeValues::SCREEN_HEIGHT
     end
+  end
+
+  def update_active_bonuses
+    @active_bonuses.each{ |bonus| bonus.update(self) }
   end
 
   def move_bonuses
@@ -53,6 +69,17 @@ class Level
     end
   end
 
+  def update_bullets
+    @bullets.reject! do |bullet|
+      ind = bullet.contact_bricks(self)
+      ind or bullet.down <= 0
+    end
+  end
+
+  def move_bullets
+    @bullets.each{ |bullet| bullet.move }
+  end
+
   def move_balls
     @balls.each do |ball|
       ball.move
@@ -66,14 +93,13 @@ class Level
   def draw
     @bricks.each{ |brick| brick.draw }
     @bonuses.each{ |bonus| bonus.draw }
-    @balls.each do |ball|
-      ball.draw
-    end
+    @bullets.each{ |bullet| bullet.draw }
+    @balls.each{ |ball| ball.draw }
   end
 end
 
 class LevelOne < Level
-  def initialize
+  def initialize(player)
     super
     count_of_bricks = 30
     bricks_per_row = 10
@@ -90,7 +116,7 @@ class LevelOne < Level
 end
 
 class LevelTwo < Level
-  def initialize
+  def initialize(player)
     super
     count_of_bricks = 50
     initial_top_screen_offset = 30
@@ -111,7 +137,7 @@ class LevelTwo < Level
 end
 
 class LevelThree < Level
-  def initialize
+  def initialize(player)
     super
     count_of_bricks = 55
     initial_top_screen_offset = 30
