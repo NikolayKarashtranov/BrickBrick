@@ -2,11 +2,11 @@ class Level
   attr_accessor :bricks, :bonuses, :balls, :bullets, :active_bonuses, :fake_ball_effect
   attr_reader :player
   def initialize(player)
-    @bricks = Array.new
-    @bonuses = Array.new
-    @active_bonuses = Array.new
-    @balls = Array.new
-    @bullets = Array.new
+    @bricks = []
+    @bonuses = []
+    @active_bonuses = []
+    @balls = []
+    @bullets = []
     @balls.push Ball.new
     @player = player
     @fake_ball_effect = false
@@ -56,7 +56,7 @@ class Level
   end
 
   def move_bonuses
-    @bonuses.each{ |bonus| bonus.move }
+    @bonuses.each(&:move)
   end
 
   def update_balls(player)
@@ -76,13 +76,11 @@ class Level
   end
 
   def move_bullets
-    @bullets.each{ |bullet| bullet.move }
+    @bullets.each(&:move)
   end
 
   def move_balls
-    @balls.each do |ball|
-      ball.move
-    end
+    @balls.each(&:move)
   end
 
   def over?
@@ -145,36 +143,36 @@ class LevelThree < Level
     brick_heigth = SizeValues::BRICK_HEIGHT
     (0..count_of_bricks-1).each do |brick_number|
       case brick_number
-        when 0..9
-          brick_x = (brick_number % max_bricks_on_row) * brick_width
-          brick_y = initial_top_screen_offset
-        when 10..18
-          brick_x = (brick_number % max_bricks_on_row + 0.5) * brick_width
-          brick_y = initial_top_screen_offset + brick_heigth
-        when 19..26
-          brick_x = ((brick_number + 1) % max_bricks_on_row + 1) * brick_width
-          brick_y = initial_top_screen_offset + brick_heigth * 2
-        when 27..33
-          brick_x = ((brick_number + 3) % max_bricks_on_row + 1.5) * brick_width
-          brick_y = initial_top_screen_offset + brick_heigth * 3
-        when 34..39
-          brick_x = ((brick_number + 6) % max_bricks_on_row + 2) * brick_width
-          brick_y = initial_top_screen_offset + brick_heigth * 4
-        when 40..44
-          brick_x = ((brick_number) % max_bricks_on_row + 2.5) * brick_width
-          brick_y = initial_top_screen_offset + brick_heigth * 5
-        when 45..48
-          brick_x = ((brick_number + 5) % max_bricks_on_row + 3) * brick_width
-          brick_y = initial_top_screen_offset + brick_heigth * 6
-        when 49..51
-          brick_x = ((brick_number + 1) % max_bricks_on_row + 3.5) * brick_width
-          brick_y = initial_top_screen_offset + brick_heigth * 7
-        when 52..53
-          brick_x = ((brick_number - 2) % max_bricks_on_row + 4) * brick_width
-          brick_y = initial_top_screen_offset + brick_heigth * 8
-        when 54
-          brick_x = 4.5 * brick_width
-          brick_y = initial_top_screen_offset + brick_heigth * 9
+      when 0..9
+        brick_x = (brick_number % max_bricks_on_row) * brick_width
+        brick_y = initial_top_screen_offset
+      when 10..18
+        brick_x = (brick_number % max_bricks_on_row + 0.5) * brick_width
+        brick_y = initial_top_screen_offset + brick_heigth
+      when 19..26
+        brick_x = ((brick_number + 1) % max_bricks_on_row + 1) * brick_width
+        brick_y = initial_top_screen_offset + brick_heigth * 2
+      when 27..33
+        brick_x = ((brick_number + 3) % max_bricks_on_row + 1.5) * brick_width
+        brick_y = initial_top_screen_offset + brick_heigth * 3
+      when 34..39
+        brick_x = ((brick_number + 6) % max_bricks_on_row + 2) * brick_width
+        brick_y = initial_top_screen_offset + brick_heigth * 4
+      when 40..44
+        brick_x = (brick_number % max_bricks_on_row + 2.5) * brick_width
+        brick_y = initial_top_screen_offset + brick_heigth * 5
+      when 45..48
+        brick_x = ((brick_number + 5) % max_bricks_on_row + 3) * brick_width
+        brick_y = initial_top_screen_offset + brick_heigth * 6
+      when 49..51
+        brick_x = ((brick_number + 1) % max_bricks_on_row + 3.5) * brick_width
+        brick_y = initial_top_screen_offset + brick_heigth * 7
+      when 52..53
+        brick_x = ((brick_number - 2) % max_bricks_on_row + 4) * brick_width
+        brick_y = initial_top_screen_offset + brick_heigth * 8
+      when 54
+        brick_x = 4.5 * brick_width
+        brick_y = initial_top_screen_offset + brick_heigth * 9
       end
       brick = DoubleHitBrick.new(brick_x, brick_y)
       @bricks.push brick
