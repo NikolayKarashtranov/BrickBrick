@@ -1,9 +1,9 @@
 class Ball < VisualGameObject
   include Math
   attr_accessor :angle
-  def initialize(x = SizeValues::CENTER_X, y = SizeValues::CENTER_Y, angle = 180)
-    ball = Gosu::Image.new("media/ball.png")
-    super(x, y, SizeValues::BALL_DIAMETER, SizeValues::BALL_DIAMETER, ball)
+  def initialize(x_coord = SizeValues::CENTER_X, y_coord = SizeValues::CENTER_Y, angle = 180)
+    ball = Gosu::Image.new('media/ball.png')
+    super(x_coord, y_coord, SizeValues::BALL_DIAMETER, SizeValues::BALL_DIAMETER, ball)
     @angle = angle
   end
 
@@ -13,8 +13,8 @@ class Ball < VisualGameObject
   end
 
   def calc_ball_player_contact_angle(player)
-    half_width = width/2.0
-    player_half_width = player.width/2.0
+    half_width = width / 2.0
+    player_half_width = player.width / 2.0
     ball_horizontal_center = left + half_width
     player_horizontal_center = player.left + player_half_width
     angle_coef = SizeValues::ANGLE_FORMULA_MAX_ANGLE / (half_width + player_half_width)
@@ -40,7 +40,7 @@ class Ball < VisualGameObject
   end
 
   def vertical_wall_brick_hit(brick)
-    angle_in_radians = @angle/180 * PI
+    angle_in_radians = @angle / 180 * PI
     is_ball_in_brick_horizontal_range = right > brick.left && left < brick.right
     if is_ball_in_brick_horizontal_range
       is_ball_in_contact_down_wall = up < brick.down && up >= brick.down - SizeValues::CONTACT_BUFFER
@@ -51,23 +51,23 @@ class Ball < VisualGameObject
       down_wall_hit = is_ball_in_contact_down_wall && is_ball_coming_from_below
       up_wall_hit = is_ball_in_contact_up_wall && is_ball_coming_from_above
 
-      down_wall_hit or up_wall_hit
+      down_wall_hit || up_wall_hit
     end
   end
 
   def side_wall_brick_hit(brick)
-    angle_in_radians = @angle/180 * PI
+    angle_in_radians = @angle / 180 * PI
     is_ball_in_brick_vertical_range = down > brick.up && up < brick.down
     if is_ball_in_brick_vertical_range
       is_ball_in_contact_left_wall = right > brick.left && right <= brick.x + SizeValues::CONTACT_BUFFER
-      is_ball_in_contact_right_wall =  left < brick.right && left >= brick.right - SizeValues::CONTACT_BUFFER
+      is_ball_in_contact_right_wall = left < brick.right && left >= brick.right - SizeValues::CONTACT_BUFFER
       is_ball_coming_from_left = sin(angle_in_radians) > 0
       is_ball_coming_from_right = sin(angle_in_radians) < 0
 
       left_wall_hit = is_ball_in_contact_left_wall && is_ball_coming_from_left
       right_wall_hit = is_ball_in_contact_right_wall && is_ball_coming_from_right
 
-      left_wall_hit or right_wall_hit
+      left_wall_hit || right_wall_hit
     end
   end
 

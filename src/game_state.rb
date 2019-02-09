@@ -21,34 +21,34 @@ end
 
 class GameOver < StaticGameState
   def initialize(window)
-    loss_image_x = SizeValues::SCREEN_WIDTH/2 - SizeValues::LOSS_IMAGE_WIDTH/2
-    loss_image_y = SizeValues::SCREEN_HEIGHT/2 - SizeValues::LOSS_IMAGE_HEIGHT/2
-    game_over_img = Gosu::Image.new("media/GameOver.png")
+    loss_image_x = SizeValues::SCREEN_WIDTH / 2 - SizeValues::LOSS_IMAGE_WIDTH / 2
+    loss_image_y = SizeValues::SCREEN_HEIGHT / 2 - SizeValues::LOSS_IMAGE_HEIGHT / 2
+    game_over_img = Gosu::Image.new('media/GameOver.png')
     super(loss_image_x, loss_image_y, game_over_img, window)
   end
 end
 
 class Victory < StaticGameState
   def initialize(window)
-    victory_image_x = SizeValues::SCREEN_WIDTH/2 - SizeValues::VICTORY_IMAGE_WIDTH/2
-    victory_image_y = SizeValues::SCREEN_HEIGHT/2 - SizeValues::VICTORY_IMAGE_HEIGHT/2
-    victory_img = Gosu::Image.new("media/YouWon.png")
+    victory_image_x = SizeValues::SCREEN_WIDTH / 2 - SizeValues::VICTORY_IMAGE_WIDTH / 2
+    victory_image_y = SizeValues::SCREEN_HEIGHT / 2 - SizeValues::VICTORY_IMAGE_HEIGHT / 2
+    victory_img = Gosu::Image.new('media/YouWon.png')
     super(victory_image_x, victory_image_y, victory_img, window)
   end
 end
 
 class InitMenu < StaticGameState
   def initialize(window, state = false)
-    @font = Gosu::Font.new(35, name: "Nimbus Mono L")
+    @font = Gosu::Font.new(35, name: 'Nimbus Mono L')
     @menu_text = SizeValues::MENU_TEXT
-    init_img = Gosu::Image.new("media/Menu.png")
+    init_img = Gosu::Image.new('media/Menu.png')
     super(0, 0, init_img, window)
     @state = state
   end
 
   def update
     if Gosu.button_down? Gosu::KB_SPACE
-      @state or start_game
+      @state || start_game
     elsif Gosu.button_down? Gosu::KB_L
       LoadGameState.new(@window)
     else
@@ -64,9 +64,9 @@ end
 
 class InputTextState
     def initialize(window, title)
-    @font = Gosu::Font.new(20, name: "Nimbus Mono L")
+    @font = Gosu::Font.new(20, name: 'Nimbus Mono L')
     window.text_input = Gosu::TextInput.new
-    window.text_input.text = ""
+    window.text_input.text = ''
     @window = window
     @title = title
   end
@@ -79,7 +79,7 @@ end
 
 class LoadGameState < InputTextState
   def initialize(window)
-    title = "Please enter a save game name and press \"Escape\" to load the game."
+    title = 'Please enter a save game name and press "Escape" to load the game.'
     super(window, title)
   end
 
@@ -113,7 +113,7 @@ class LoadGameState < InputTextState
   end
 
   def load_game
-    file_name = "save/" + @window.text_input.text + ".txt"
+    file_name = 'save/' + @window.text_input.text + '.txt'
     begin
       loaded = Marshal.load(File.read(file_name))
       load_game_state(loaded)
@@ -141,7 +141,7 @@ end
 
 class SaveGameState < InputTextState
   def initialize(window, in_game)
-    title = "Please enter save game name and press \"Escape\" to save the game."
+    title = 'Please enter save game name and press "Escape" to save the game.'
     super(window, title)
     @in_game = in_game
   end
@@ -157,8 +157,8 @@ class SaveGameState < InputTextState
   end
 
   def save_game
-    file_name = "save/"+ @window.text_input.text + ".txt"
-    File.open(file_name, "w") {|f| f.write(Marshal.dump(save_info))}
+    file_name = 'save/'+ @window.text_input.text + '.txt'
+    File.open(file_name, 'w') {|f| f.write(Marshal.dump(save_info))}
   end
 
   def objs_to_positions(arr, angle = false)

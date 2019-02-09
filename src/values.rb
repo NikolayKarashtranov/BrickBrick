@@ -2,8 +2,8 @@ module SizeValues
   SCREEN_WIDTH = 640
   SCREEN_HEIGHT = 480
   BALL_STEP = 5
-  CENTER_X = SCREEN_WIDTH/2
-  CENTER_Y = SCREEN_HEIGHT/2
+  CENTER_X = SCREEN_WIDTH / 2
+  CENTER_Y = SCREEN_HEIGHT / 2
   BALL_DIAMETER = 15
   PLAYER_WIDTH = 66
   PLAYER_HEIGHT = 13
@@ -15,7 +15,7 @@ module SizeValues
   BONUS_STEP = 2
   CONTACT_BUFFER = 5
   ANGLE_FORMULA_MAX_ANGLE = 85
-	BRICK_WIDTH = 64
+  BRICK_WIDTH = 64
   BRICK_HEIGHT = 16
   VICTORY_IMAGE_WIDTH = 360
   VICTORY_IMAGE_HEIGHT = 112
@@ -25,12 +25,14 @@ module SizeValues
   SAVE_GAME_TEXT_Y = 166
   SAVE_GAME_INPUT_X = 280
   SAVE_GAME_INPUT_Y = 186
-  MENU_TEXT = "1. Press \"SPACE\" to play/continue\n2. Press \"L\" to load a game\n\n\n" \
-  "In game:\n1. Press \"G\" to start\n2. Press \"P\" to pause\n3. Press \"S\" to save your game" \
-  "\n4. Press \"M\" for this menu"
+  MENU_TEXT = "1. Press \"SPACE\" to play/continue\n2. Press \"L\"" \
+  " to load a game\n\n\n" \
+  "In game:\n1. Press \"G\" to start\n2. Press \"P\"" \
+  "to pause\n3. Press \"S\" to save your game" \
+  "\n4. Press \"M\" for this menu".freeze
   MENU_TEXT_X = 34
   MENU_TEXT_Y = 108
-  FIRE_BONUS_TIME = 10000
+  FIRE_BONUS_TIME = 10_000
   BULLET_WIDTH = 6
   BULLET_HEIGHT = 17
   BULLET_STEP = 8

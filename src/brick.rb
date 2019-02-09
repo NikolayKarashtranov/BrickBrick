@@ -18,8 +18,8 @@ class Brick < VisualGameObject
   end
 
   def spawn_bonus(level)
-    bonus_x = left + (@width - SizeValues::BONUS_WIDTH)/2
-    bonus_y = up + (@height - SizeValues::BONUS_HEIGHT)/2
+    bonus_x = left + (@width - SizeValues::BONUS_WIDTH) / 2
+    bonus_y = up + (@height - SizeValues::BONUS_HEIGHT) / 2
     klass = [BonusDouble, BonusFire, BonusLength, FakeBall].sample
     double_bonus = klass.new(bonus_x, bonus_y)
     level.bonuses.push(double_bonus)

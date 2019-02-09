@@ -1,6 +1,6 @@
 class Player < VisualGameObject
   attr_accessor :long
-  def initialize(x = SizeValues::PLAYER_STARTING_X, y = SizeValues::PLAYER_STARTING_Y, long = false)
+  def initialize(x_coord = SizeValues::PLAYER_STARTING_X, y_coord = SizeValues::PLAYER_STARTING_Y, long = false)
     if long
       image = Gosu::Image.new("media/stick_long.png")
       player_width = SizeValues::PLAYER_LONG_WIDTH
@@ -9,7 +9,7 @@ class Player < VisualGameObject
       player_width = SizeValues::PLAYER_WIDTH
     end
     @long = long
-    super(x, y, player_width, SizeValues::PLAYER_HEIGHT, image)
+    super(x_coord, y_coord, player_width, SizeValues::PLAYER_HEIGHT, image)
   end
 
   def go_left
@@ -31,14 +31,14 @@ class Player < VisualGameObject
   def back_to_start
     @x = SizeValues::PLAYER_STARTING_X
     @y = SizeValues::PLAYER_STARTING_Y
-    if @long
-      @x = @x - switch_length_offset
-    end
+    @x -= switch_length_offset if @long
   end
 
   def contact_bonuses(level)
     level.bonuses = level.bonuses.reject do |bonus|
-      if(bonus.down > up && bonus.down < down && bonus.right > left && bonus.left < right)
+      in_horizontal_range = bonus.right > left && bonus.left < right
+      in_vertical_range = bonus.down > up && bonus.down < down
+      if in_horizontal_range && in_vertical_range
         bonus.activate(level)
         true
       else
@@ -49,9 +49,9 @@ class Player < VisualGameObject
 
   def shorten
     @long = false
-    @image = Gosu::Image.new("media/stick.png")
+    @image = Gosu::Image.new('media/stick.png')
     @width = SizeValues::PLAYER_WIDTH
-    @x = @x + switch_length_offset
+    @x += switch_length_offset
   end
 
   def fit_in_screen
@@ -64,14 +64,14 @@ class Player < VisualGameObject
 
   def lengthen
     @long = true
-    @image = Gosu::Image.new("media/stick_long.png")
+    @image = Gosu::Image.new('media/stick_long.png')
     @width = SizeValues::PLAYER_LONG_WIDTH
-    @x = @x - switch_length_offset
+    @x -= switch_length_offset
     fit_in_screen
   end
 
   def switch_length_offset
-    (SizeValues::PLAYER_LONG_WIDTH - SizeValues::PLAYER_WIDTH)/2
+    (SizeValues::PLAYER_LONG_WIDTH - SizeValues::PLAYER_WIDTH) / 2
   end
 
   def switch_length
