@@ -1,4 +1,5 @@
 class Ball < VisualGameObject
+  include Math
   attr_accessor :angle
   def initialize(x = SizeValues::CENTER_X, y = SizeValues::CENTER_Y, angle = 180)
     ball = Gosu::Image.new("media/ball.png")

@@ -1,6 +1,5 @@
 require 'gosu'
 require 'fileutils'
-include Math
 require_relative 'src/values'
 require_relative 'src/visual_game_object'
 require_relative 'src/player'
