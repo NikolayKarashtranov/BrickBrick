@@ -10,7 +10,6 @@ class Bonus < VisualGameObject
   end
 end
 
-
 class BonusDouble < Bonus
   attr_accessor :x, :y
   def initialize(x, y)
@@ -57,7 +56,6 @@ class BonusFire < Bonus
     elsif Gosu::milliseconds - @shoot_period > @previous_shoot
       fire(level)
     end
-    
   end
 
   def activate(level)

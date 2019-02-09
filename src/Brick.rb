@@ -6,7 +6,7 @@ class Brick < VisualGameObject
 
   def get_hit(level)
     @hp -= 1
-    if @hp == 1 
+    if @hp == 1
       @image = Gosu::Image.new("media/brick.png")
     end
     if @hp.zero?

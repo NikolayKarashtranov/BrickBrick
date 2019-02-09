@@ -43,7 +43,6 @@ class Level
     move_balls
     @player.contact_bonuses(self)
     process_updated(state)
-    
   end
 
   def update_bonuses
