@@ -1,8 +1,8 @@
 class Bonus < VisualGameObject
   attr_accessor :active
-  def initialize(x, y, bonus_pic)
+  def initialize(x_coord, y_coord, bonus_pic)
     @active = false
-    super(x, y, SizeValues::BONUS_WIDTH, SizeValues::BONUS_HEIGHT, bonus_pic)
+    super(x_coord, y_coord, SizeValues::BONUS_WIDTH, SizeValues::BONUS_HEIGHT, bonus_pic)
   end
 
   def move
@@ -12,13 +12,13 @@ end
 
 class BonusDouble < Bonus
   attr_accessor :x, :y
-  def initialize(x, y)
-    bonus_pic = Gosu::Image.new("media/double.png")
-    super(x, y, bonus_pic)
+  def initialize(x_coord, y_coord)
+    bonus_pic = Gosu::Image.new('media/double.png')
+    super(x_coord, y_coord, bonus_pic)
   end
 
   def activate(level)
-    new_balls = Array.new
+    new_balls = []
     level.balls.each do |ball|
       new_balls.push Ball.new(ball.x, ball.y, rand(360))
     end
@@ -29,12 +29,12 @@ end
 class BonusFire < Bonus
   attr_accessor :previous_shoot
   attr_reader :number_of_shots
-  def initialize(x, y, shots = false)
-    bonus_pic = Gosu::Image.new("media/fire.png")
-    @number_of_shots = shots ? shots : SizeValues::NUMBER_OF_SHOTS
+  def initialize(x_coord, y_coord, shots = false)
+    bonus_pic = Gosu::Image.new('media/fire.png')
+    @number_of_shots = shots || SizeValues::NUMBER_OF_SHOTS
     @shoot_period = SizeValues::PERIOD_OF_SHOOTS
     @previous_shoot = false
-    super(x, y, bonus_pic)
+    super(x_coord, y_coord, bonus_pic)
   end
 
   def fire(level)
@@ -49,11 +49,11 @@ class BonusFire < Bonus
   end
 
   def update(level)
-    if @number_of_shots == 0
+    if @number_of_shots.zero?
       level.active_bonuses.delete(self)
     elsif !@previous_shoot
       fire(level)
-    elsif Gosu::milliseconds - @shoot_period > @previous_shoot
+    elsif Gosu.milliseconds - @shoot_period > @previous_shoot
       fire(level)
     end
   end
@@ -64,10 +64,10 @@ class BonusFire < Bonus
 end
 
 class BonusLength < Bonus
-  def initialize(x, y)
-    bonus_pic = Gosu::Image.new("media/length.png")
+  def initialize(x_coord, y_coord)
+    bonus_pic = Gosu::Image.new('media/length.png')
     @period = SizeValues::FIRE_BONUS_TIME
-    super(x, y, bonus_pic)
+    super(x_coord, y_coord, bonus_pic)
   end
 
   def activate(level)
@@ -76,9 +76,9 @@ class BonusLength < Bonus
 end
 
 class FakeBall < VisualGameObject
-  def initialize(x, y)
-    ball = Gosu::Image.new("media/ball.png")
-    super(x, y, SizeValues::BALL_DIAMETER, SizeValues::BALL_DIAMETER, ball)
+  def initialize(x_coord, y_coord)
+    ball = Gosu::Image.new('media/ball.png')
+    super(x_coord, y_coord, SizeValues::BALL_DIAMETER, SizeValues::BALL_DIAMETER, ball)
   end
 
   def move
@@ -91,10 +91,10 @@ class FakeBall < VisualGameObject
 end
 
 class Bullet < VisualGameObject
-  def initialize(x, y)
-    bullet_pic = Gosu::Image.new("media/bullet.png")
+  def initialize(x_coord, y_coord)
+    bullet_pic = Gosu::Image.new('media/bullet.png')
     @step = SizeValues::BULLET_STEP
-    super(x, y, SizeValues::BULLET_WIDTH, SizeValues::BULLET_HEIGHT, bullet_pic)
+    super(x_coord, y_coord, SizeValues::BULLET_WIDTH, SizeValues::BULLET_HEIGHT, bullet_pic)
   end
 
   def move

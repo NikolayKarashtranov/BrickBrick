@@ -52,7 +52,7 @@ class Level
   end
 
   def update_active_bonuses
-    @active_bonuses.each{ |bonus| bonus.update(self) }
+    @active_bonuses.each { |bonus| bonus.update(self) }
   end
 
   def move_bonuses
@@ -88,10 +88,10 @@ class Level
   end
 
   def draw
-    @bricks.each{ |brick| brick.draw }
-    @bonuses.each{ |bonus| bonus.draw }
-    @bullets.each{ |bullet| bullet.draw }
-    @balls.each{ |ball| ball.draw }
+    @bricks.each(&:draw)
+    @bonuses.each(&:draw)
+    @bullets.each(&:draw)
+    @balls.each(&:draw)
   end
 end
 
@@ -101,10 +101,10 @@ class LevelOne < Level
     count_of_bricks = 30
     bricks_per_row = 10
     initial_top_screen_offset = 30
-    (0..count_of_bricks-1).each do |brick_number|
+    (0..count_of_bricks - 1).each do |brick_number|
       row = brick_number / bricks_per_row
       column = brick_number % bricks_per_row
-      brick_x = column*SizeValues::BRICK_WIDTH
+      brick_x = column * SizeValues::BRICK_WIDTH
       brick_y = initial_top_screen_offset + row * SizeValues::BRICK_HEIGHT
       brick = SingleHitBrick.new(brick_x, brick_y)
       @bricks.push brick
@@ -123,11 +123,11 @@ class LevelTwo < Level
       column = brick_number % bricks_per_row
       brick_x = column * SizeValues::BRICK_WIDTH
       brick_y = initial_top_screen_offset + row * SizeValues::BRICK_HEIGHT
-      if (row.odd?)
-        brick = DoubleHitBrick.new(brick_x, brick_y)
-      else
-        brick = SingleHitBrick.new(brick_x, brick_y)
-      end
+      brick = if row.odd?
+                DoubleHitBrick.new(brick_x, brick_y)
+              else
+                SingleHitBrick.new(brick_x, brick_y)
+              end
       @bricks.push brick
     end
   end
@@ -141,7 +141,7 @@ class LevelThree < Level
     max_bricks_on_row = 10
     brick_width = SizeValues::BRICK_WIDTH
     brick_heigth = SizeValues::BRICK_HEIGHT
-    (0..count_of_bricks-1).each do |brick_number|
+    (0..count_of_bricks - 1).each do |brick_number|
       case brick_number
       when 0..9
         brick_x = (brick_number % max_bricks_on_row) * brick_width

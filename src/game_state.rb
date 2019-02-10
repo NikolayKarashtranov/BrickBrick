@@ -63,7 +63,7 @@ class InitMenu < StaticGameState
 end
 
 class InputTextState
-    def initialize(window, title)
+  def initialize(window, title)
     @font = Gosu::Font.new(20, name: 'Nimbus Mono L')
     window.text_input = Gosu::TextInput.new
     window.text_input.text = ''
@@ -117,11 +117,10 @@ class LoadGameState < InputTextState
     begin
       loaded = Marshal.load(File.read(file_name))
       load_game_state(loaded)
-    rescue => ex
+    rescue Errno::ENOENT => ex
       puts ex.message
       false
     end
-
   end
 
   def update
@@ -157,8 +156,8 @@ class SaveGameState < InputTextState
   end
 
   def save_game
-    file_name = 'save/'+ @window.text_input.text + '.txt'
-    File.open(file_name, 'w') {|f| f.write(Marshal.dump(save_info))}
+    file_name = 'save/' + @window.text_input.text + '.txt'
+    File.open(file_name, 'w') { |f| f.write(Marshal.dump(save_info)) }
   end
 
   def objs_to_positions(arr, angle = false)
@@ -177,7 +176,7 @@ class SaveGameState < InputTextState
 
   def save_info
     in_game_player = @in_game.level.player
-    player = { x: in_game_player.x, y: in_game_player.y, long: in_game_player.long}
+    player = { x: in_game_player.x, y: in_game_player.y, long: in_game_player.long }
     level = @in_game.level
     balls = objs_to_positions(level.balls, true)
     bonuses = objs_to_positions(level.bonuses)
@@ -207,19 +206,11 @@ class InGameState
       @pause = true
       state = SaveGameState.new(@window, self)
     elsif @pause
-      if Gosu.button_down? Gosu::KB_G
-        @pause = false
-      end
+      @pause = false if Gosu.button_down? Gosu::KB_G
     else
-      if Gosu.button_down? Gosu::KB_P
-        @pause = true
-      end
-      if Gosu.button_down? Gosu::KB_LEFT
-        @player.go_left
-      end
-      if Gosu.button_down? Gosu::KB_RIGHT
-        @player.go_right
-      end
+      @pause = true if Gosu.button_down? Gosu::KB_P
+      @player.go_left if Gosu.button_down? Gosu::KB_LEFT
+      @player.go_right if Gosu.button_down? Gosu::KB_RIGHT
       state = @level.update(state)
     end
     state

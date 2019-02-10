@@ -2,10 +2,10 @@ class Player < VisualGameObject
   attr_accessor :long
   def initialize(x_coord = SizeValues::PLAYER_STARTING_X, y_coord = SizeValues::PLAYER_STARTING_Y, long = false)
     if long
-      image = Gosu::Image.new("media/stick_long.png")
+      image = Gosu::Image.new('media/stick_long.png')
       player_width = SizeValues::PLAYER_LONG_WIDTH
     else
-      image = Gosu::Image.new("media/stick.png")
+      image = Gosu::Image.new('media/stick.png')
       player_width = SizeValues::PLAYER_WIDTH
     end
     @long = long

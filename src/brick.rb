@@ -1,18 +1,14 @@
 class Brick < VisualGameObject
   attr_reader :hp
-  def initialize(x, y, image)
-    super(x, y, SizeValues::BRICK_WIDTH, SizeValues::BRICK_HEIGHT, image)
+  def initialize(x_coord, y_coord, image)
+    super(x_coord, y_coord, SizeValues::BRICK_WIDTH, SizeValues::BRICK_HEIGHT, image)
   end
 
   def get_hit(level)
     @hp -= 1
-    if @hp == 1
-      @image = Gosu::Image.new("media/brick.png")
-    end
+    @image = Gosu::Image.new('media/brick.png') if @hp == 1
     if @hp.zero?
-      if rand(8) == 0
-        spawn_bonus(level)
-      end
+      spawn_bonus(level) if rand(8).zero?
       level.bricks.delete(self)
     end
   end
@@ -27,17 +23,17 @@ class Brick < VisualGameObject
 end
 
 class SingleHitBrick < Brick
-  def initialize(x, y)
-    brick = Gosu::Image.new("media/brick.png")
-    super(x, y, brick)
+  def initialize(x_coord, y_coord)
+    brick = Gosu::Image.new('media/brick.png')
+    super(x_coord, y_coord, brick)
     @hp = 1
   end
 end
 
 class DoubleHitBrick < Brick
-  def initialize(x, y)
-    brick = Gosu::Image.new("media/brick_double.png")
-    super(x, y, brick)
+  def initialize(x_coord, y_coord)
+    brick = Gosu::Image.new('media/brick_double.png')
+    super(x_coord, y_coord, brick)
     @hp = 2
   end
 end
